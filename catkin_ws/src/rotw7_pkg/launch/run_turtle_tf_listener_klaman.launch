@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+    <arg name="follower_model_name" default="follower" />
+    <arg name="model_to_be_followed_name" default="target" />
+
+    <node name="turtle_tf_listener_node" pkg="rotw7_pkg" type="turtle_tf_listener_kalman.py" args="$(arg follower_model_name) $(arg model_to_be_followed_name)" output="screen"/>
+</launch>

@@ -1,0 +1,6 @@
+set(turtle_tf_3d_SETUP_PY_VERSION "1.0.0")
+set(turtle_tf_3d_SETUP_PY_SCRIPTS "")
+set(turtle_tf_3d_SETUP_PY_PACKAGES "turtle_tf_3d")
+set(turtle_tf_3d_SETUP_PY_PACKAGE_DIRS "src/turtle_tf_3d")
+set(turtle_tf_3d_SETUP_PY_MODULES "")
+set(turtle_tf_3d_SETUP_PY_MODULE_DIRS "")

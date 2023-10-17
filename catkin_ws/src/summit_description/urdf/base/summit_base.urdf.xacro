@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<robot name="summit_xl" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="cylinder_inertia" params="m r h">
+        <inertia  ixx="${m*(3*r*r+h*h)/12}" ixy = "0" ixz = "0"
+                  iyy="${m*(3*r*r+h*h)/12}" iyz = "0"
+                  izz="${m*r*r/2}" /> 
+    </xacro:macro>
+
+  <xacro:macro name="summit_base">
+    
+      <xacro:include filename = "$(find summit_description)/urdf/base/summit_base.gazebo.xacro"/>
+	  <!-- Robot mechanical and motor parameters -->
+	  <xacro:property name="PI" value="3.1415926535897931"/>
+	  <xacro:property name="wheel_width" value="0.175" />
+      <xacro:property name="camera_link" value="0.1" />
+      <xacro:property name="lidar_link" value="0.1" />
+       <xacro:property name="PI" value="3.1415926535897931"/>
+	<!-- BASE FOOTPRINT -->
+		<link name="summit_base_footprint">
+		  <visual>
+			  <origin xyz="0 0 0" rpy="0 0 0" />
+			  <geometry>
+				 <box size="0.001 0.001 0.001" />
+			  </geometry>
+		  </visual>
+		</link>
+
+		<joint name="summit_base_footprint_joint" type="fixed">
+		  <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0" /> <!-- ${wheel_radius} property must be defined inside wheel description -->
+		  <parent link="summit_base_footprint"/>
+		  <child link="summit_base_link" />
+		</joint>
+        
+          <joint name="camera_joint" type="fixed">
+            <axis xyz="0 1 0" />
+            <origin xyz="${camera_link+0.15} 0 0.45" rpy="0 0 0"/>
+            <parent link="summit_base_footprint"/>
+            <child link="camera_link"/>
+          </joint>
+
+        <!-- Camera -->
+    <link name="camera_link">
+        <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+        <box size="${camera_link} ${camera_link+0.15} ${camera_link}"/>
+        </geometry>
+        </collision>
+
+        <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+        <box size="${camera_link} ${camera_link+0.15} ${camera_link}"/>
+        </geometry>
+        <material name="red"/>
+        </visual>
+
+        <inertial>
+        <mass value="1e-5" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+        </inertial>
+    </link>
+
+
+    <joint name="lidar_joint" type="fixed">
+            <axis xyz="0 1 0" />
+            <origin xyz="${camera_link-0.2} 0 0.45" rpy="0 0 0"/>
+            <parent link="summit_base_footprint"/>
+            <child link="lidar_link"/>
+          </joint>
+
+    <link name="lidar_link">
+        <collision>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+           <cylinder length="0.2" radius="0.15"/>
+          </geometry>
+        </collision>
+
+        <visual>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+           <cylinder length="0.2" radius="0.15"/>
+          </geometry>
+          <material name="black"/>
+        </visual>
+
+        <inertial>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <mass value="1"/>
+          <cylinder_inertia m="1" r="0.15" h="0.2"/>
+        </inertial>
+       </link>
+
+  <!-- BASE_LINK -->
+  <link name="summit_base_link">
+    <inertial>
+      <mass value="125.0" />
+      <origin xyz="0 0 0" />
+      <inertia  ixx="1.391" ixy="0.004"  ixz="0.0"  iyy="6.853"  iyz="0.0"  izz="6.125" />
+    </inertial>
+
+    <visual>
+       <origin xyz="0 0 0" rpy="0 0 0" />
+
+       <geometry>
+	     <mesh filename="package://summit_description/meshes/base/summit_base.dae"/>
+       </geometry>
+
+       <material name="darkgrey">
+         <color rgba="0.1 0.1 0.1 1"/>
+       </material>
+
+    </visual>
+
+    <collision>
+       <origin xyz="0 0 0" rpy="0 0 0 " />
+       <geometry>
+         <mesh filename="package://summit_description/meshes/base/summit_base.dae"/>
+       </geometry>
+    </collision>
+
+  </link>
+
+  </xacro:macro>
+
+</robot>
+
